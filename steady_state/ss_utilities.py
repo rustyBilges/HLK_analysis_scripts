@@ -43,3 +43,36 @@ def plot_state_and_stats(series, times, window_length):
 	AX[2].plot(res[:,1])
 	AX[2].axhline(np.std(series[1000:-1]))
 	plt.show()
+
+def compare_plot_state_and_stats(series1, series2, times, window_length):
+        """Plot method"""
+
+        fig, axes = plt.subplots(1,3, figsize=(13,5))
+        AX = axes.flatten()
+
+        AX[0].plot(series1, 'g')
+        AX[0].plot(series2, 'r')
+	AX[0].legend(['low IR', 'high IR'])
+	AX[0].set_xlabel('iteration')
+	AX[0].set_ylabel('total biomass')
+
+        res1 = stats_at_discrete_times(series1, times, window_length)
+        res2 = stats_at_discrete_times(series2, times, window_length)
+
+        AX[1].plot(np.asarray(times) + (window_length/2), res1[:,0], 'go')
+        AX[1].plot(np.asarray(times) + (window_length/2), res2[:,0], 'ro')
+        AX[1].axhline(np.mean(series1[1000:-1]), color='g')
+        AX[1].axhline(np.mean(series2[1000:-1]), color='r')
+
+	AX[1].set_xlabel('iteration')
+	AX[1].set_ylabel('mean biomass around iteration')
+
+        AX[2].axhline(np.std(series1[1000:-1]), color='g')
+        AX[2].axhline(np.std(series2[1000:-1]), color='r')
+        AX[2].plot(np.asarray(times) + (window_length/2), res1[:,1], 'go')
+        AX[2].plot(np.asarray(times) + (window_length/2), res2[:,1], 'ro')
+	AX[2].set_xlabel('iteration')
+	AX[2].set_ylabel('stdev in biomass around iteration')
+	plt.subplots_adjust(wspace=0.5)
+        plt.show()
+
