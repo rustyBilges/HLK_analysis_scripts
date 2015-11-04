@@ -1,5 +1,7 @@
 These plotting scripts are for making plots that investigate the response of simulated communities to the change in one parameter.
 
+Oringinal versions of the scripts (and the data) are found in parameter_fiddling/bc3_results/
+
 Currently we look at:
 1. MAI ratio 
 2. Reproduction rate (for MAI = 0.0 and 0.5)
@@ -11,3 +13,18 @@ It will alos make it easy to analysis any further simulations we may want to run
 1. R.R. for MAI = 1.0 
 2. Increasing number of repeats (cureently 22 - WOULD NEED CHANGING IN SCRIPTS)
 3. Testing response of another parameter e.g synthesis ability.
+
+
+
+*******************************************************************************
+Subdirectories : 
+1. landscape size
+2. number of species
+
+Files to plot results from simualtions (25) reps exploring the effect of these variables on persistence.
+
+These plots condense the information into single images in stead of the four subplots. 
+
+Possibly need to plot full version for appendix.
+
+These simualtions were run with the increase reproduction rate of 0.1
