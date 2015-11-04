@@ -1,0 +1,13 @@
+These plotting scripts are for making plots that investigate the response of simulated communities to the change in one parameter.
+
+Currently we look at:
+1. MAI ratio 
+2. Reproduction rate (for MAI = 0.0 and 0.5)
+
+These standardised scripts make it easy to switch between these cases to ammend the plots (which are saved in the figures directory for chapter 5)
+
+It will alos make it easy to analysis any further simulations we may want to run e.g.
+
+1. R.R. for MAI = 1.0 
+2. Increasing number of repeats (cureently 22 - WOULD NEED CHANGING IN SCRIPTS)
+3. Testing response of another parameter e.g synthesis ability.
