@@ -29,20 +29,51 @@ def stats_at_discrete_times(series, times, window_length, print_flag=False):
 	return return_value
 
 
+def _autocorr(x):
+    result = np.correlate(x, x, mode='full')
+    return result[result.size/2:]
+
 def plot_state_and_stats(series, times, window_length):
 	"""Plot method"""
 
-	fig, axes = plt.subplots(1,3)
+	fig, axes = plt.subplots(1,4)
 	AX = axes.flatten()
 	
 	AX[0].plot(series)
+	AX[0].set_ylim([0,70000])
 
 	res = stats_at_discrete_times(series, times, window_length)
 	AX[1].plot(res[:,0])
 	AX[1].axhline(np.mean(series[1000:-1]))
 	AX[2].plot(res[:,1])
 	AX[2].axhline(np.std(series[1000:-1]))
+	AX[3].plot(range(0,len(_autocorr(series[1000:-1]))), _autocorr(series[1000:-1]))
 	plt.show()
+
+def plot_zscore(series, times, window_length, trans=1000):
+	"""Plot method"""
+	mu = np.mean(series[trans:-1])
+	sig = np.std(series[trans:-1])
+	SE = sig / np.sqrt(window_length)
+
+	res = stats_at_discrete_times(series, times, window_length)
+	zsc = []
+	for r in res[:,0]:
+		zsc.append( (r-mu)/SE )
+
+	fig, axes = plt.subplots(1,4)
+	AX = axes.flatten()
+	
+	AX[0].plot(np.abs(zsc))
+	AX[0].axhline(1.96)
+
+	#AX[1].plot(res[:,0])
+	#AX[1].axhline(np.mean(series[1000:-1]))
+	#AX[2].plot(res[:,1])
+	#AX[2].axhline(np.std(series[1000:-1]))
+	#AX[3].plot(range(0,len(_autocorr(series[1000:-1]))), _autocorr(series[1000:-1]))
+	plt.show()
+
 
 def compare_plot_state_and_stats(series1, series2, times, window_length):
         """Plot method"""
