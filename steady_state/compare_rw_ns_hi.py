@@ -1,12 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import statsmodels.tsa.stattools as ts
 from ss_utilities import stats_at_discrete_times, compare_plot_state_and_stats, plot_state_and_stats, plot_zscore
 from ss_utilities import  _autocorr, stats_at_discrete_times
 
-plot_dynamics = False
+plot_dynamics = False 
 plot_corr = False
-plot_zscore = False
-plot_fft = True
+plot_zscore = True 
+plot_adfs = False
+plot_fft = False 
 
 pops1 = np.genfromtxt("test_files/highIM/output_pops_long.csv", delimiter=',')
 #pops1 = np.genfromtxt("test_files/lowIM/output_pops_long.csv", delimiter=',')
@@ -44,18 +46,24 @@ if plot_dynamics:
 	AX = axes.flatten()
 
 	AX[0].plot(hi, 'r', label= 'IBM simulation (high IR)')
+	result = ts.adfuller(hi) 
+	AX[0].set_title('IBM simulation (high IR) \nadf stat = %f' %result[0])
 	AX[0].set_ylabel('abundance')
 	AX[0].grid()
 	AX[0].set_ylim([8000,26000])
-	AX[0].set_title('IBM simulation (high IR)')
+	#AX[0].set_title('IBM simulation (high IR)')
 	AX[1].plot(rw, 'g', label= 'random walk')
+	result = ts.adfuller(rw) 
+	AX[1].set_title('Random walk \nadf stat = %f' %result[0])
 	AX[1].set_ylabel('abundance')
 	AX[1].grid()
 	AX[1].set_ylim([8000,26000])
-	AX[1].set_title('random walk')
+	#AX[1].set_title('random walk')
 	AX[2].plot(ns, 'b', label= 'normal distribution')
+	result = ts.adfuller(ns) 
+	AX[2].set_title('Normal distribution \nadf stat = %f' %result[0])
 	AX[2].set_ylim([8000,26000])
-	AX[2].set_title('normal distribution')
+	#AX[2].set_title('normal distribution')
 	AX[2].set_xlabel('iterations')
 	AX[2].set_ylabel('abundance')
 	AX[2].grid()
@@ -76,17 +84,23 @@ def z_score(series, times, window_length):
                 zsc.append( (r-mu)/SE )
 	return zsc
 
-if plot_zscore:
+def _adsf_score(series, times, window_length):
 
+	ret  = []
+	for t in times:
+		ret.append(ts.adfuller(series[t:t+window_length])[0])
 
+	return ret
+
+if plot_adfs:
 
 	fig,axes = plt.subplots(3,1,figsize=(10,6))
 
 	AX = axes.flatten()
+	wind_len = 3000
 
-
- 	zhi = z_score(hi, range(1000,47000,100), 1000)
-	AX[0].plot( range(1000,47000,100), zhi, 'ro')
+ 	zhi = _adsf_score(hi, range(1000,47000,10000), wind_len)
+	AX[0].plot( range(1000,47000,10000), zhi, 'ro')
 	AX[0].axhline(1.96)
 	AX[0].axhline(-1.96)
 	
@@ -96,7 +110,7 @@ if plot_zscore:
 	AX[0].grid()
 	AX[0].set_ylabel("z-score")
 
- 	zrw = z_score(rw, range(1000,47000,100), 1000)
+ 	zrw = _adsf_score(rw, range(1000,47000,10000), wind_len)
 	AX[1].plot(zrw, 'go')
 	AX[1].axhline(1.96)
 	AX[1].axhline(-1.96)
@@ -108,7 +122,55 @@ if plot_zscore:
 	AX[1].grid()
 	AX[1].set_ylabel("z-score")
 
- 	zns = z_score(ns, range(1000,47000,100), 1000)
+ 	zns = _adsf_score(ns, range(1000,47000,10000), wind_len)
+	AX[2].plot(zns, 'bo')
+	AX[2].axhline(1.96)
+	AX[2].axhline(-1.96)
+	
+	cnt = np.ones(len(zns))
+	count = np.sum(cnt[np.abs(zns)>1.96])
+	AX[2].set_title("Normal distribution \n reject h0 = %d out of %d" %(count, len(zhi)))
+
+	AX[2].grid()
+	AX[2].set_xlabel("iteration")
+	AX[2].set_ylabel("z-score")
+
+	plt.tight_layout()
+	plt.show()
+
+if plot_zscore:
+
+	win_len = 5000
+
+	fig,axes = plt.subplots(3,1,figsize=(10,6))
+
+	AX = axes.flatten()
+
+
+ 	zhi = z_score(hi, range(1000,50000-win_len-1000,100), win_len)
+	AX[0].plot( range(1000,50000-win_len-1000,100), zhi, 'ro')
+	AX[0].axhline(1.96)
+	AX[0].axhline(-1.96)
+	
+	cnt = np.ones(len(zhi))
+	count = np.sum(cnt[np.abs(zhi)>1.96])
+	AX[0].set_title("IBM simulation (high IR) \n reject h0 = %d out of %d" %(count, len(zhi)))
+	AX[0].grid()
+	AX[0].set_ylabel("z-score")
+
+ 	zrw = z_score(rw, range(1000,50000-win_len-1000,100), win_len)
+	AX[1].plot(zrw, 'go')
+	AX[1].axhline(1.96)
+	AX[1].axhline(-1.96)
+	
+	cnt = np.ones(len(zrw))
+	count = np.sum(cnt[np.abs(zrw)>1.96])
+	AX[1].set_title("Random walk \n reject h0 = %d out of %d" %(count, len(zhi)))
+
+	AX[1].grid()
+	AX[1].set_ylabel("z-score")
+
+ 	zns = z_score(ns, range(1000,50000-win_len-1000,100), win_len)
 	AX[2].plot(zns, 'bo')
 	AX[2].axhline(1.96)
 	AX[2].axhline(-1.96)
