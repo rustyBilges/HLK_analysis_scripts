@@ -1,0 +1,5 @@
+The long run comes from early vegetarian simulation:
+
+habitat_loss/miguel_IBM/IM_vs_HL_heatmap/longer_runs/IM_0.001_HL_0_mut_0/vegetarian/3617875_1/
+
+
