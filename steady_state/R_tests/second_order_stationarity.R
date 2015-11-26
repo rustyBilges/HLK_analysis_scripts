@@ -178,7 +178,7 @@ output = cbind(seq(1000,49000,by=wl), adf_s, adf_p, kpss_s, kpss_p)
 #write.table(output, file = "sp3_stat_tests_v_length_hi_long.csv",row.names=FALSE, na="",col.names=FALSE, sep=",")
 #write.table(output, file = "sp58_stat_tests_v_length_hi_long.csv",row.names=FALSE, na="",col.names=FALSE, sep=",")
 #write.table(output, file = "sp59_stat_tests_v_length_hi_long.csv",row.names=FALSE, na="",col.names=FALSE, sep=",")
-write.table(output, file = "sp60_stat_tests_v_length_hi_long.csv",row.names=FALSE, na="",col.names=FALSE, sep=",")
+
 
 ## so far we do not implement the stationarity testing with a sliding window per species. Perhaps this would be informative
 

@@ -4,9 +4,9 @@ import statsmodels.tsa.stattools as ts
 from ss_utilities import stats_at_discrete_times, compare_plot_state_and_stats, plot_state_and_stats, plot_zscore
 from ss_utilities import  _autocorr, stats_at_discrete_times
 
-plot_dynamics = False 
+plot_dynamics = True 
 plot_corr = False
-plot_zscore = True 
+plot_zscore = False 
 plot_adfs = False
 plot_fft = False 
 
@@ -47,26 +47,29 @@ if plot_dynamics:
 
 	AX[0].plot(hi, 'r', label= 'IBM simulation (high IR)')
 	result = ts.adfuller(hi) 
-	AX[0].set_title('IBM simulation (high IR) \nadf stat = %f' %result[0])
+	#AX[0].set_title('IBM simulation (high IR) \nadf stat = %f' %result[0])
 	AX[0].set_ylabel('abundance')
 	AX[0].grid()
 	AX[0].set_ylim([8000,26000])
+	AX[0].annotate("A", (0,0), (0.02,0.9), color='black', fontsize= fsa, fontweight='bold', xycoords='data', textcoords='axes fraction')
 	#AX[0].set_title('IBM simulation (high IR)')
 	AX[1].plot(rw, 'g', label= 'random walk')
 	result = ts.adfuller(rw) 
-	AX[1].set_title('Random walk \nadf stat = %f' %result[0])
+	#AX[1].set_title('Random walk \nadf stat = %f' %result[0])
 	AX[1].set_ylabel('abundance')
 	AX[1].grid()
 	AX[1].set_ylim([8000,26000])
+	AX[1].annotate("B", (0,0), (0.02,0.9), color='black', fontsize= fsa, fontweight='bold', xycoords='data', textcoords='axes fraction')
 	#AX[1].set_title('random walk')
 	AX[2].plot(ns, 'b', label= 'normal distribution')
 	result = ts.adfuller(ns) 
-	AX[2].set_title('Normal distribution \nadf stat = %f' %result[0])
+	#AX[2].set_title('Normal distribution \nadf stat = %f' %result[0])
 	AX[2].set_ylim([8000,26000])
 	#AX[2].set_title('normal distribution')
 	AX[2].set_xlabel('iterations')
 	AX[2].set_ylabel('abundance')
 	AX[2].grid()
+	AX[2].annotate("C", (0,0), (0.02,0.9), color='black', fontsize= fsa, fontweight='bold', xycoords='data', textcoords='axes fraction')
 	#plt.legend()
 	plt.tight_layout()
 	plt.show()
