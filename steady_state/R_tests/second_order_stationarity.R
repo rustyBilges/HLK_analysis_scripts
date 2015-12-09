@@ -208,13 +208,26 @@ for (i in seq(1,60)){
 ## plot to check trophic levels aggregated correctly
 par(mfrow=c(1,1))
 st = 0
-en = 1000
+en = 5000
 plot(1:length(hi[st:en]), hi[st:en], type="n", ylim=range(c(0,40000)))
 lines(1:length(hi[st:en]), hi[st:en])
 lines(1:length(tl0[st:en]), tl0[st:en], col='green')
 lines(1:length(tl1[st:en]), tl1[st:en], col='yellow')
 lines(1:length(tl1[st:en]), tl2[st:en], col='blue')
 lines(1:length(tl1[st:en]), tl3[st:en], col='red')
+
+## phase space??
+st=1000
+en = 50000
+off = 500
+plot(hi[st:en], hi[(st+off):(en+off)],type='l')
+
+plot(tl0[st:en], tl1[st:en])
+library(scatterplot3d)
+st = 1000
+en = 50000
+scatterplot3d(tl0[st:en], tl1[st:en], tl2[st:en], type='l')
+
 
 wl = 1000
 psr <- list()
