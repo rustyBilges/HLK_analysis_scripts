@@ -24,13 +24,13 @@ print(np.mean(mean[1,:]))
 
 print(h_means)
 
+plt.plot(mean[0,:], mean[1,:], 'o')
 #plt.plot(mean[0,:], mean[1,:], 'o')
-#plt.plot(mean[0,:], mean[1,:], 'o')
-#plt.xlabel('simulation mean for low IR')
-#plt.ylabel('simulation mean for high IR')
+plt.xlabel('simulation mean for low IR')
+plt.ylabel('simulation mean for high IR')
 #
-#a,b = plt.xlim()
-#plt.plot([a,b], [a,b], 'k')
-#plt.show()
+a,b = plt.xlim()
+plt.plot([a,b], [a,b], 'k')
+plt.show()
 
 

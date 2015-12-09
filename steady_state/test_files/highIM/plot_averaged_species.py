@@ -75,17 +75,46 @@ print(sor[:][1])
 #ax.plot(pops[st:en,sor[-1][1]-1], pops[st:en,sor[-2][1]-1])
 #plt.show()
 #
-en = 10000
+
+## now lets apply the moving average window
+wl = 4000
+en = 10000 - wl
+
+ma0id = sor[-1][1]-1
+ma1id = sor[-2][1]-1
+ma2id = sor[-3][1]-1
+
+la0id = sor[0][1]-1
+la1id = sor[1][1]-1
+la2id = sor[2][1]-1
+
+t = []
+ma0 = []
+ma1 = []
+ma2 = []
+la0 = []
+la1 = []
+la2 = []
+
+for i in range(en):
+	t.append((i+wl)/2.0)
+	ma0.append(np.mean(pops[i:i+wl,ma0id]))	
+	ma1.append(np.mean(pops[i:i+wl,ma1id]))	
+	ma2.append(np.mean(pops[i:i+wl,ma2id]))	
+	la0.append(np.mean(pops[i:i+wl,la0id]))	
+	la1.append(np.mean(pops[i:i+wl,la1id]))	
+	la2.append(np.mean(pops[i:i+wl,la2id]))	
+
 fig,axes = plt.subplots(1,2,figsize=(12,6), sharey=False)
 AX= axes.flatten()
-AX[0].plot(pops[0:en,sor[-1][1]-1])
-AX[0].plot(pops[0:en,sor[-2][1]-1],'g')
-AX[0].plot(pops[0:en,sor[-3][1]-1],'r')
+AX[0].plot(t,ma0)
+AX[0].plot(t,ma1, 'g')
+AX[0].plot(t,ma2, 'r')
 AX[0].set_xlabel('iterations')
 AX[0].set_ylabel('individuals')
 AX[0].legend(['most abundant species (TL1)', 'second species (TL2)', 'third species (TL3)'])
 AX[0].grid()
-AX[0].set_ylim([0,10000])
+#AX[0].set_ylim([0,10000])
 #plt.plot(pops[0:10000,19])
 AX[1].plot(pops[0:en,sor[0][1]-1])
 AX[1].plot(pops[0:en,sor[1][1]-1],'g')
