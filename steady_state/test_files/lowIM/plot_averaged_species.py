@@ -11,29 +11,8 @@ fsa = 15
 #leg = ['TL1', 'TL2', 'TL3', 'TL4']
 
 pops = np.genfromtxt(dir + 'output_pops_long.csv', delimiter=',')
-sps = np.genfromtxt(dir + 'output_species_long.csv', delimiter=',', skip_header=1)
-
-#pops = np.genfromtxt(dir + 'output_pops.csv', delimiter=',')
-#sps = np.genfromtxt(dir + 'output_species.csv', delimiter=',', skip_header=1)
-
-tls = sps[:,1]
-#tls = sps3[:,1]
-tls = dict()
-ii = 0
-tlss = sps[:,1]
-ids = sps[:,0]
-for i in ids:
-        tls[i] = tlss[ii]
-        ii+=1
-
-sor = sorted(tls.items())
-tls = []
-ids = []
-for s in sor:
-        tls.append(s[1])
-        ids.append(s[0])
-tls = np.asarray(tls)
-
+tls = np.zeros(np.shape(pops)[1])
+ 
 print(np.shape(pops))
 print(tls)
 
@@ -77,7 +56,8 @@ print(sor[:][1])
 #
 
 ## now lets apply the moving average window
-wl = 30000
+wl = 4000
+#wl = 30000
 en = 50000 - wl
 
 ma0id = sor[-1][1]-1
@@ -119,6 +99,7 @@ AX[0].set_ylabel('individuals', fontsize=fsa)
 AX[0].legend(['species 1', 'species 2', 'species 3'])
 AX[0].grid()
 AX[0].set_ylim([0,6000])
+AX[0].annotate("A", (0,0), (0.02,0.9), color='black', fontsize= fsa, fontweight='bold', xycoords='data', textcoords='axes fraction')
 #plt.plot(pops[0:10000,19])
 AX[1].plot(t,la0)
 AX[1].plot(t,la1, 'g')
@@ -130,5 +111,6 @@ AX[1].set_xlabel('iterations', fontsize=fsa)
 AX[1].legend(['species 60', 'species 59', 'species 58'])
 AX[1].grid()
 AX[1].set_ylim([0,80])
+AX[1].annotate("B", (0,0), (0.02,0.9), color='black', fontsize= fsa, fontweight='bold', xycoords='data', textcoords='axes fraction')
 #plt.ylim([0,10000])
 plt.show()
